@@ -201,7 +201,8 @@ class Repository:
         timestamp = int(time.time())
         timezone_offset = time.strftime("%z")
 
-        author_string = f"{author_name} <{author_email}> {timestamp} {timezone_offset}"
+        author_string = f'{author_name} <{author_email}> {timestamp} {timezon' +
+            'e_offset}'
         commit.author = author_string
         commit.committer = author_string
 
@@ -290,7 +291,8 @@ class Repository:
             timestamp = int(time.time())
             timezone_offset = time.strftime("%z")
 
-            author = f"{author_name} <{author_email}> {timestamp} {timezone_offset}"
+            author = f'{author_name} <{author_email}> {timestamp} {timezone_o' +
+                'ffset}'
 
         commit.author = author
         commit.committer = committer or author
@@ -321,7 +323,8 @@ class Repository:
             ref_name: The name of the reference to checkout
 
         Raises:
-            ValueError: If the reference is invalid or the working directory is not clean
+            ValueError: If the reference is invalid or the working directory \
+                is not clean
         """
         # First, check if the working directory is clean
         # In a real implementation, we would check for uncommitted changes

@@ -121,7 +121,9 @@ class Reference:
             direct reference.
 
         Returns:
-            The object ID the reference points to, or None if the reference is empty
+            The object ID the reference points to, or None if the reference is \
+                \
+                empty
         """
         if self.target is None:
             return None

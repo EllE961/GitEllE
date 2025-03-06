@@ -227,7 +227,8 @@ class Index:
         Remove files from the index.
 
         Args:
-            paths: A list of file paths to remove (relative to the repository root)
+            paths: A list of file paths to remove (relative to the repository \
+                root)
         """
         for path in paths:
             path = str(path)

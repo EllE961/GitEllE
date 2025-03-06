@@ -46,7 +46,8 @@ def branch(
             if repo.head.is_symbolic and repo.head.target=
                 = f"refs/heads/{branch_name}":
                 click.echo(
-                    f"error: cannot delete branch '{branch_name}' checked out at '{repo.path}'",
+                    'error: cannot delete branch '{branch_name}' checked out' +
+                        ' at '{repo.path}'',
                     err=True)
                 sys.exit(1)
 

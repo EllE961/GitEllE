@@ -1,26 +1,14 @@
-src/gitelle/commands/add.py:51:28: F541 f-string is missing placeholders
-src/gitelle/commands/branch.py:46:80: E501 line too long (89 > 79 characters)
-src/gitelle/commands/branch.py:48:80: E501 line too long (96 > 79 characters)
-src/gitelle/commands/clone.py:19:80: E501 line too long (104 > 79 characters)
-src/gitelle/commands/clone.py:27:80: E501 line too long (95 > 79 characters)
-src/gitelle/commands/clone.py:28:80: E501 line too long (90 > 79 characters)
-src/gitelle/commands/clone.py:44:80: E501 line too long (103 > 79 characters)
-src/gitelle/commands/clone.py:54:80: E501 line too long (89 > 79 characters)
-src/gitelle/commands/clone.py:55:80: E501 line too long (82 > 79 characters)
-src/gitelle/commands/clone.py:76:80: E501 line too long (91 > 79 characters)
-src/gitelle/commands/clone.py:78:80: E501 line too long (85 > 79 characters)
-src/gitelle/commands/commit.py:44:80: E501 line too long (80 > 79 characters)
-src/gitelle/commands/diff.py:158:80: E501 line too long (91 > 79 characters)
-src/gitelle/commands/init.py:23:80: E501 line too long (80 > 79 characters)
-src/gitelle/commands/status.py:138:80: E501 line too long (93 > 79 characters)
-src/gitelle/commands/status.py:140:80: E501 line too long (108 > 79 characters)
-src/gitelle/commands/status.py:147:80: E501 line too long (97 > 79 characters)
-src/gitelle/core/index.py:205:80: E501 line too long (80 > 79 characters)
-src/gitelle/core/index.py:229:80: E501 line too long (83 > 79 characters)
-src/gitelle/core/objects.py:170:5: F811 redefinition of unused '_get_object_path' from line 157
-src/gitelle/core/refs.py:120:80: E501 line too long (90 > 79 characters)
-src/gitelle/core/refs.py:123:80: E501 line too long (84 > 79 characters)
-src/gitelle/core/repository.py:86:80: E501 line too long (86 > 79 characters)
-src/gitelle/core/repository.py:203:80: E501 line too long (87 > 79 characters)
-src/gitelle/core/repository.py:292:80: E501 line too long (84 > 79 characters)
-src/gitelle/core/repository.py:323:80: E501 line too long (89 > 79 characters)
+src/gitelle/commands/branch.py:46:58: E999 SyntaxError: invalid syntax
+src/gitelle/commands/clone.py:56:12: E999 IndentationError: unexpected indent
+src/gitelle/commands/diff.py:159:21: E131 continuation line unaligned for hanging indent
+src/gitelle/commands/status.py:138:28: E999 SyntaxError: EOL while scanning string literal
+src/gitelle/core/index.py:230:80: E501 line too long (83 > 79 characters)
+src/gitelle/core/objects.py:173:2: W291 trailing whitespace
+src/gitelle/core/objects.py:176:2: W291 trailing whitespace
+src/gitelle/core/objects.py:181:2: W291 trailing whitespace
+src/gitelle/core/objects.py:182:2: W291 trailing whitespace
+src/gitelle/core/objects.py:183:1: E302 expected 2 blank lines, found 1
+src/gitelle/core/refs.py:124:80: E501 line too long (84 > 79 characters)
+src/gitelle/core/repository.py:204:80: E501 line too long (87 > 79 characters)
+src/gitelle/core/repository.py:293:80: E501 line too long (84 > 79 characters)
+src/gitelle/core/repository.py:324:80: E501 line too long (89 > 79 characters)

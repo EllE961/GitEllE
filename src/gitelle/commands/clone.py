@@ -17,7 +17,8 @@ from gitelle.commands.init import init_repository
 @click.argument("directory", required=False)
 @click.option("--depth", type=int,
               help=
-                  "Create a shallow clone with a history truncated to the specified number of commits")
+                  'Create a shallow clone with a history truncated to the spe' +
+                      'cified number of commits')
 def clone(
         url: str,
         directory: Optional[str] = None,
@@ -26,7 +27,9 @@ def clone(
     Clone a repository into a new directory.
 
     Note: In this educational implementation, we don't actually fetch from remote repositories.
-    This command creates an empty repository structure that simulates a cloned repository.
+    This command creates an empty repository structure that simulates a cloned \
+        \
+        repository.
     """
     try:
         # Parse the URL to get the repository name
@@ -42,7 +45,8 @@ def clone(
         # Check if the target directory already exists
         if target_path.exists() and os.listdir(target_path):
             click.echo(
-                f"fatal: destination path '{target_dir}' already exists and is not an empty directory",
+                'fatal: destination path '{target_dir}' already exists and i' +
+                    's not an empty directory',
                 err=True)
             sys.exit(1)
 
@@ -60,7 +64,7 @@ def clone(
         # Set up a remote
         config_file = repo.gitelle_dir / "config"
         with open(config_file, "w") as f:
-            f.write(f"""[core]
+            f.write("""[core]
         repositoryformatversion = 0
         filemode = true
         bare = false
@@ -78,7 +82,8 @@ def clone(
             'Note: This is a simulated clone and' +
                 'does not actually fetch from the remote.')
         click.echo(
-            f"To work with a real Git repository, use: git clone {url} {target_dir}")
+            f'To work with a real Git repository, use: git clone {url} {targe' +
+                't_dir}')
 
     except Exception as e:
         click.echo(f"error: {e}", err=True)
