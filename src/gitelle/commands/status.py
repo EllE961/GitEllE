@@ -135,7 +135,8 @@ def status(short: bool = False) -> None:
                 if unstaged_files:
                     click.echo("\nChanges not staged for commit:")
                     click.echo(
-                        "  (use \"gitelle add <file>...\" to update what will be committed)")
+                        "  (
+                            use \"gitelle add <file>...\" to update what will be committed)")
                     click.echo(
                         "  (use \"gitelle checkout -- <file>...\" to discard changes in working directory)")
                     for file in unstaged_files:

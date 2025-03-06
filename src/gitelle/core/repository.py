@@ -83,7 +83,8 @@ class Repository:
         or its parents.
 
         Args:
-            start_path: The path to start the search from (default: current directory)
+            start_path: The path to start the search from (
+                default: current directory)
 
         Returns:
             A Repository instance or None if no repository is found

@@ -41,7 +41,11 @@ def create_commit(
     Args:
         repo: The repository
         message: The commit message
-        author: The author information (if None, get_author_info() will be used)
+        author: The author information (
+if None,
+            get_author_info() will be used
+        )
+
 
     Returns:
         The ID of the new commit

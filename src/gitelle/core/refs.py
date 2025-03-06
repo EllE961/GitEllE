@@ -117,7 +117,8 @@ class Reference:
         Get the resolved target of the reference.
 
         For direct references, this is just the target.
-        For symbolic references, this follows the chain until it finds a direct reference.
+        For symbolic references, this follows the chain until it finds a
+            direct reference.
 
         Returns:
             The object ID the reference points to, or None if the reference is empty

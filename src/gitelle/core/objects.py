@@ -167,19 +167,19 @@ class GitObject(ABC):
         """
         return repo.objects_dir / object_id[:2] / object_id[2:]
 
-    def _get_object_path(self, object_id: str) -> Path:
-        """
-        Get the path to this object in the repository.
-
-        Args:
-            object_id: The object ID
-
-        Returns:
-            The path to the object file
-        """
-        return self.repo.objects_dir / object_id[:2] / object_id[2:]
-
-
+#     def _get_object_path(self, object_id: str) -> Path:
+#         """
+#         Get the path to this object in the repository.
+# 
+#         Args:
+#             object_id: The object ID
+# 
+#         Returns:
+#             The path to the object file
+#         """
+#         return self.repo.objects_dir / object_id[:2] / object_id[2:]
+# 
+# 
 class Blob(GitObject):
     """
     Represents a Git blob object, which stores file content.

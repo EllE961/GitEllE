@@ -16,7 +16,8 @@ from gitelle.commands.init import init_repository
 @click.argument("url", required=True)
 @click.argument("directory", required=False)
 @click.option("--depth", type=int,
-              help="Create a shallow clone with a history truncated to the specified number of commits")
+              help=
+                  "Create a shallow clone with a history truncated to the specified number of commits")
 def clone(
         url: str,
         directory: Optional[str] = None,
@@ -51,7 +52,8 @@ def clone(
         # Initialize a new repository
         repo = init_repository(target_path)
 
-        # In a real implementation, we would now fetch objects from the remote repository
+        # In a real implementation, we would now fetch objects from the
+            remote repository
         # and update the local references. For this simplified version, we'll just
         # acknowledge that we've created an empty repository structure.
 
@@ -73,7 +75,8 @@ def clone(
 
         click.echo(f"Initialized empty GitEllE repository in {target_path}")
         click.echo(
-            "Note: This is a simulated clone and does not actually fetch from the remote.")
+            'Note: This is a simulated clone and' +
+                'does not actually fetch from the remote.')
         click.echo(
             f"To work with a real Git repository, use: git clone {url} {target_dir}")
 

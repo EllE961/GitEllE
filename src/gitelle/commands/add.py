@@ -48,7 +48,7 @@ def add(paths: List[str]) -> None:
             # Print a summary
             file_count = len(relative_paths)
             if file_count == 1:
-                click.echo(f"Added 1 file to the index")
+                click.echo("Added 1 file to the index")
             else:
                 click.echo(f"Added {file_count} files to the index")
 

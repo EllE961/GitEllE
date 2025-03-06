@@ -202,7 +202,8 @@ class Index:
         Add files to the index.
 
         Args:
-            paths: A list of file paths to add (relative to the repository root)
+            paths: A list of file paths to add (
+                relative to the repository root)
         """
         for path in paths:
             path = Path(path)

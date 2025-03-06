@@ -155,7 +155,8 @@ def diff(cached: bool = False, paths: List[str] = None) -> None:
             # In a real implementation, this would generate a diff
             # between the HEAD commit and the index
             click.echo(
-                "Diff between HEAD and index not implemented in this educational version.")
+                'Diff between HEAD and index not' +
+                    'implemented in this educational version.')
         else:
             # Show diff between index and working tree
             diff_output = diff_index_to_worktree(repo, path_objs)

@@ -43,7 +43,8 @@ def branch(
                 sys.exit(1)
 
             # Check if it's the current branch
-            if repo.head.is_symbolic and repo.head.target == f"refs/heads/{branch_name}":
+            if repo.head.is_symbolic and repo.head.target=
+                = f"refs/heads/{branch_name}":
                 click.echo(
                     f"error: cannot delete branch '{branch_name}' checked out at '{repo.path}'",
                     err=True)

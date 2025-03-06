@@ -20,7 +20,8 @@ def init_repository(
     Args:
         path: The path where the repository should be initialized.
               If None, the current directory is used.
-        bare: Whether to create a bare repository (without a working directory).
+        bare: Whether to create a bare repository (
+            without a working directory).
               Not fully implemented yet.
 
     Returns:
