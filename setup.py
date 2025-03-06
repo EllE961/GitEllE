@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="gitelle",
-    version="0.1.1",
+    version="0.1.2",
     author="EllE",
     author_email="yahyaalsalmi961@gmail.com",
     description="A lightweight, educational implementation of Git in Python",
