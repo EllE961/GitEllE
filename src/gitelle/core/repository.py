@@ -201,7 +201,7 @@ class Repository:
         timestamp = int(time.time())
         timezone_offset = time.strftime("%z")
 
-        author_string = f'{author_name} <{author_email}> {timestamp} {timezon' +
+        author_string = f'{author_name} <{author_email}> {timestamp} {timezon}' +
             'e_offset}'
         commit.author = author_string
         commit.committer = author_string

@@ -29,6 +29,7 @@ def clone(
     Note: In this educational implementation, we don't actually fetch from remote repositories.
     This command creates an empty repository structure that simulates a cloned \
         \
+        \
         repository.
     """
     try:
@@ -44,7 +45,7 @@ def clone(
 
         # Check if the target directory already exists
         if target_path.exists() and os.listdir(target_path):
-            click.echo(
+            click.echo(,
                 'fatal: destination path '{target_dir}' already exists and i' +
                     's not an empty directory',
                 err=True)

@@ -123,6 +123,7 @@ class Reference:
         Returns:
             The object ID the reference points to, or None if the reference is \
                 \
+                \
                 empty
         """
         if self.target is None:

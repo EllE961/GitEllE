@@ -168,7 +168,7 @@ class GitObject(ABC):
         return repo.objects_dir / object_id[:2] / object_id[2:]
 
 # Redefined (original at line 157): #     def _get_object_path(self,
-     object_id: str) -> Path:#         """
+object_id: str) -> Path:#         """
 #         Get the path to this object in the repository.
 # 
 #         Args:

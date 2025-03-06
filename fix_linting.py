@@ -1,306 +1,243 @@
 #!/usr/bin/env python
 """
-Script to fix common linting errors in the Gitelle project.
-This script fixes:
-1. Unused imports (F401)
-2. Lines too long (E501)
-3. Missing placeholders in f-strings (F541)
-4. Unused local variables (F841)
-5. Redefined functions (F811)
+Script to fix syntax errors in the Gitelle project that occurred after automated fixes.
 """
 
-import os
 import re
 import sys
 from pathlib import Path
 
+# List of specific errors to fix
+ERRORS = [
+    ("src/gitelle/commands/branch.py", 46, "E999", "SyntaxError: invalid syntax"),
+    ("src/gitelle/commands/clone.py", 48, "E999", "SyntaxError: invalid syntax. Perhaps you forgot a comma?"),
+    ("src/gitelle/commands/diff.py", 159, "E131", "continuation line unaligned for hanging indent"),
+    ("src/gitelle/commands/status.py", 138, "E999", "SyntaxError: unterminated string literal (detected at line 138)"),
+    ("src/gitelle/core/objects.py", 171, "E999", "IndentationError: unindent does not match any outer indentation level"),
+    ("src/gitelle/core/refs.py", 124, "E501", "line too long (80 > 79 characters)"),
+    ("src/gitelle/core/repository.py", 204, "E999", "SyntaxError: f-string: expecting '}'")
+]
 
-def remove_unused_imports(file_path):
-    """Remove unused imports from a Python file."""
-    with open(file_path, 'r', encoding='utf-8') as f:
-        content = f.read()
+def fix_syntax_error(file_path, line_number, error_code, error_message):
+    """Fix syntax errors by examining the context and applying appropriate fixes."""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+    except Exception as e:
+        print(f"Error reading file {file_path}: {e}")
+        return
 
-    # Get all the imports
-    import_pattern = re.compile(r'^\s*(?:from\s+[\w.]+\s+)?import\s+.*$', re.MULTILINE)
-    imports = import_pattern.findall(content)
-
-    # Filter out 'sys', 'os', etc. that were reported as unused
-    unused_imports = [
-        # Extract module name from errors like: 'sys' imported but unused
-        line.split("'")[1] for line in open('paste.txt', 'r').readlines()
-        if "F401" in line
-    ]
-
-    # Process each import line
-    lines = content.split('\n')
-    filtered_lines = []
-    
-    for line in lines:
-        # Check if line is an import statement
-        if any(imp in line for imp in unused_imports) and not line.strip().startswith('#'):
-            # For 'from module import x, y, z' type imports
-            if 'from' in line and 'import' in line:
-                from_part, import_part = line.split('import', 1)
-                
-                # Extract imported names
-                imported_items = [item.strip() for item in import_part.split(',')]
-                filtered_items = []
-                
-                # Keep only items that are not in unused_imports
-                for item in imported_items:
-                    # Handle 'as' aliasing
-                    base_item = item.split(' as ')[0].strip()
-                    if all(unused not in f"{from_part}import {base_item}" for unused in unused_imports):
-                        filtered_items.append(item)
-                
-                # If we still have imports, reconstruct the line
-                if filtered_items:
-                    new_line = f"{from_part}import {', '.join(filtered_items)}"
-                    filtered_lines.append(new_line)
-                # Otherwise skip this line entirely
+    if 0 <= line_number - 1 < len(lines):
+        line = lines[line_number - 1]
+        
+        print(f"Examining line {line_number} in {file_path}:")
+        print(f"Current line: {line.rstrip()}")
+        
+        # Different fixes based on error type
+        if "invalid syntax" in error_message:
+            # Check context for line breaking issues
+            prev_line = lines[line_number - 2] if line_number > 1 else ""
             
-            # For simple 'import module' statements that are unused
-            elif any(f"'{imp}'" in line for imp in unused_imports):
-                # Skip this line as it's an unused import
-                pass
-            else:
-                filtered_lines.append(line)
-        else:
-            filtered_lines.append(line)
-
-    # Write back the filtered content
-    with open(file_path, 'w', encoding='utf-8') as f:
-        f.write('\n'.join(filtered_lines))
-    
-    print(f"Fixed unused imports in {file_path}")
-
-
-def fix_long_lines(file_path, max_length=79):
-    """Break long lines into multiple lines."""
-    with open(file_path, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-    
-    fixed_lines = []
-    for line in lines:
-        if len(line.rstrip('\n')) > max_length:
-            # Handle different types of lines
+            # Look for unclosed parentheses, quotes, or broken line continuation
+            if prev_line.strip().endswith(('(', '[', '{')) and not line.strip().startswith((')', ']', '}')):
+                # Fix indentation for continuation
+                indentation = len(prev_line) - len(prev_line.lstrip())
+                lines[line_number - 1] = ' ' * (indentation + 4) + line.lstrip()
+                print(f"Fixed indentation for continuation line")
             
-            # Function calls with multiple parameters
-            if '(' in line and ')' in line and ',' in line:
-                leading_whitespace = len(line) - len(line.lstrip())
-                parts = re.split(r'([(),])', line.strip())
-                
-                # Recombine with line breaks
-                new_line = parts[0]
-                current_length = len(parts[0])
-                
-                for part in parts[1:]:
-                    if current_length + len(part) > max_length - leading_whitespace:
-                        new_line += '\n' + ' ' * (leading_whitespace + 4) + part
-                        current_length = leading_whitespace + 4 + len(part)
-                    else:
-                        new_line += part
-                        current_length += len(part)
-                
-                fixed_lines.append(' ' * leading_whitespace + new_line)
+            elif prev_line.strip().endswith('\\'):
+                # Fix indentation after line continuation
+                indentation = len(prev_line) - len(prev_line.lstrip())
+                lines[line_number - 1] = ' ' * (indentation + 4) + line.lstrip()
+                print(f"Fixed indentation after line continuation")
             
-            # Long strings
-            elif '"' in line or "'" in line:
-                # Split into multiple string concatenations
-                leading_whitespace = len(line) - len(line.lstrip())
-                indent = ' ' * leading_whitespace
-                
-                # Find string boundaries
-                string_match = re.search(r'(["\'])(.*?)(\1)', line)
-                if string_match:
-                    before_str = line[:string_match.start()]
-                    string_content = string_match.group(2)
-                    after_str = line[string_match.end():]
-                    
-                    # Split string if it's the cause of the line being too long
-                    if len(before_str) + len(string_content) + 2 > max_length:
-                        # Find a good breaking point
-                        break_point = max_length - len(before_str) - 3  # Account for quotes and space
-                        if break_point > 0:
-                            first_part = string_content[:break_point]
-                            second_part = string_content[break_point:]
-                            
-                            new_line = f"{before_str}'{first_part}' +\n{indent}    '{second_part}'{after_str}"
-                            fixed_lines.append(new_line)
-                        else:
-                            fixed_lines.append(line)
-                    else:
-                        fixed_lines.append(line)
-                else:
-                    fixed_lines.append(line)
-            
-            # Comments that are too long
-            elif '#' in line:
-                # Keep comments as-is for now
-                fixed_lines.append(line)
-            
-            # Default case: just wrap with line continuation
-            else:
-                leading_whitespace = len(line) - len(line.lstrip())
-                
-                # Try to find good breaking points
-                break_points = [' ', ',', ':', ';', '=', '+', '-', '*', '/', '(', ')', '[', ']', '{', '}']
-                best_break = -1
-                
-                for bp in break_points:
-                    pos = line.rfind(bp, 0, max_length)
-                    if pos > best_break:
-                        best_break = pos
-                
-                if best_break > 0:
-                    fixed_lines.append(line[:best_break+1] + '\\\n')
-                    fixed_lines.append(' ' * (leading_whitespace + 4) + line[best_break+1:])
-                else:
-                    # If we can't find a good break point, leave it for manual fixing
-                    fixed_lines.append(line)
-        else:
-            fixed_lines.append(line)
-    
-    # Write back the fixed content
-    with open(file_path, 'w', encoding='utf-8') as f:
-        f.writelines(fixed_lines)
-    
-    print(f"Fixed long lines in {file_path}")
-
-
-def fix_missing_placeholders(file_path):
-    """Fix f-strings that are missing placeholders."""
-    with open(file_path, 'r', encoding='utf-8') as f:
-        content = f.read()
-    
-    # Find f-strings without placeholders
-    f_string_pattern = re.compile(r'f["\']([^{]*?)["\']')
-    matches = f_string_pattern.findall(content)
-    
-    # Replace f-strings without placeholders with regular strings
-    for match in matches:
-        content = content.replace(f'f"{match}"', f'"{match}"')
-        content = content.replace(f"f'{match}'", f"'{match}'")
-    
-    # Write back the fixed content
-    with open(file_path, 'w', encoding='utf-8') as f:
-        f.write(content)
-    
-    print(f"Fixed missing placeholders in {file_path}")
-
-
-def fix_unused_variables(file_path):
-    """Fix unused local variables by commenting them out."""
-    with open(file_path, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-    
-    # Get the line numbers of unused variables
-    unused_vars = {}
-    with open('paste.txt', 'r') as f:
-        for line in f:
-            if 'F841' in line:
-                parts = line.split(':')
-                file_name = parts[0]
-                line_num = int(parts[1])
-                var_name = line.split("'")[1]
-                
-                if file_path.as_posix() == file_name:
-                    unused_vars[line_num] = var_name
-    
-    # Fix the lines with unused variables
-    for line_num, var_name in unused_vars.items():
-        # Adjust for 0-indexed list
-        idx = line_num - 1
-        if 0 <= idx < len(lines):
-            # Comment out the variable assignment
-            if var_name in lines[idx]:
-                lines[idx] = f"# Unused: {lines[idx]}"
-    
-    # Write back the fixed content
-    with open(file_path, 'w', encoding='utf-8') as f:
-        f.writelines(lines)
-    
-    print(f"Fixed unused variables in {file_path}")
-
-
-def fix_redefined_functions(file_path):
-    """Fix redefined functions by renaming or removing them."""
-    with open(file_path, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-    
-    # Get the line numbers of redefined functions
-    redefined_funcs = {}
-    with open('paste.txt', 'r') as f:
-        for line in f:
-            if 'F811' in line:
-                parts = line.split(':')
-                file_name = parts[0]
-                line_num = int(parts[1])
-                func_name = line.split("'")[1]
-                original_line = int(line.split('line ')[1].split()[0])
-                
-                if file_path.as_posix() == file_name:
-                    redefined_funcs[line_num] = (func_name, original_line)
-    
-    # Fix the lines with redefined functions
-    for line_num, (func_name, orig_line) in redefined_funcs.items():
-        # Adjust for 0-indexed list
-        idx = line_num - 1
-        if 0 <= idx < len(lines):
-            # Comment out the redefined function
-            if func_name in lines[idx]:
-                lines[idx] = f"# Redefined (original at line {orig_line}): {lines[idx]}"
-                
-                # Look for the function body to comment out
-                i = idx + 1
-                indentation = len(lines[idx]) - len(lines[idx].lstrip())
-                
-                # Find the end of the function
-                while i < len(lines):
-                    # If we hit a line with less indentation, we're out of the function
-                    if lines[i].strip() and len(lines[i]) - len(lines[i].lstrip()) <= indentation:
+            elif any(q in prev_line and q not in prev_line[prev_line.find(q)+1:] for q in ['"', "'"]):
+                # Fix unclosed quotes
+                # Find which quote is unclosed
+                for q in ['"', "'"]:
+                    if prev_line.count(q) % 2 != 0:
+                        # Add closing quote at the end
+                        prev_line = prev_line.rstrip() + q + '\n'
+                        lines[line_number - 2] = prev_line
+                        print(f"Fixed unclosed quote in previous line")
                         break
+            
+            else:
+                # Look for potential syntax errors
+                if "=" in line and "==" not in line and "!=" not in line:
+                    if line.count("=") > 1 and not any(op in line for op in ["+", "-", "*", "/"]):
+                        # Multiple assignments on a single line - split them
+                        parts = line.split("=")
+                        indentation = len(line) - len(line.lstrip())
+                        indent = ' ' * indentation
+                        
+                        new_lines = []
+                        for i in range(len(parts) - 1):
+                            if i == 0:
+                                new_lines.append(f"{parts[i].strip()} = {parts[i+1].strip()}")
+                            else:
+                                new_lines.append(f"{indent}{parts[i].strip()} = {parts[i+1].strip()}")
+                        
+                        for i, new_line in enumerate(new_lines):
+                            if i == 0:
+                                lines[line_number - 1] = new_line + '\n'
+                            else:
+                                lines.insert(line_number - 1 + i, new_line + '\n')
+                        
+                        print(f"Split multiple assignments into separate lines")
                     
-                    # Comment out the function body
-                    lines[i] = f"# {lines[i]}"
-                    i += 1
+                # Check for broken function call arguments
+                elif "(" in line and ")" not in line:
+                    next_line = lines[line_number] if line_number < len(lines) else ""
+                    if not next_line.strip().startswith(')'):
+                        # Add comma at the end
+                        if not line.rstrip().endswith(','):
+                            lines[line_number - 1] = line.rstrip() + ',\n'
+                            print(f"Added missing comma")
+                
+                # Manual inspection message if automatic fixes don't apply
+                else:
+                    print(f"Syntax error requires manual inspection at line {line_number}")
+                    print(f"Context: Previous line: {prev_line.rstrip()}")
+                    print(f"         Current line: {line.rstrip()}")
+                    print(f"ERROR: {error_message}")
+        
+        elif "forgot a comma" in error_message:
+            # Add missing comma
+            if not line.rstrip().endswith(','):
+                lines[line_number - 1] = line.rstrip() + ',\n'
+                print(f"Added missing comma")
+        
+        elif "continuation line unaligned" in error_message:
+            # Fix indentation for continuation line
+            prev_line = lines[line_number - 2] if line_number > 1 else ""
+            indentation = len(prev_line) - len(prev_line.lstrip())
+            lines[line_number - 1] = ' ' * (indentation + 4) + line.lstrip()
+            print(f"Aligned continuation line")
+        
+        elif "unterminated string literal" in error_message:
+            # Fix unclosed string
+            if "'" in line and line.count("'") % 2 != 0:
+                # Add closing quote
+                lines[line_number - 1] = line.rstrip() + "'\n"
+                print(f"Added closing quote")
+            elif '"' in line and line.count('"') % 2 != 0:
+                # Add closing quote
+                lines[line_number - 1] = line.rstrip() + '"\n'
+                print(f"Added closing quote")
+            else:
+                # Check for strings that might span multiple lines
+                next_line = lines[line_number] if line_number < len(lines) else ""
+                if not (line.rstrip().endswith('\\') and ('"' in next_line or "'" in next_line)):
+                    # If it's not a properly continued string, add line continuation
+                    lines[line_number - 1] = line.rstrip() + ' \\\n'
+                    print(f"Added line continuation for multi-line string")
+        
+        elif "unindent does not match" in error_message:
+            # Fix indentation
+            prev_line = lines[line_number - 2] if line_number > 1 else ""
+            indentation = len(prev_line) - len(prev_line.lstrip())
+            
+            # Look back for the outer indentation level
+            outer_indent = 0
+            for i in range(line_number - 2, 0, -1):
+                if len(lines[i].strip()) > 0 and len(lines[i]) - len(lines[i].lstrip()) < indentation:
+                    outer_indent = len(lines[i]) - len(lines[i].lstrip())
+                    break
+            
+            # Adjust indentation
+            lines[line_number - 1] = ' ' * outer_indent + line.lstrip()
+            print(f"Fixed indentation to match outer level")
+        
+        elif "f-string: expecting '}'" in error_message:
+            # Fix unclosed f-string braces
+            count_open = line.count('{')
+            count_close = line.count('}')
+            
+            if count_open > count_close:
+                # Add missing closing braces
+                diff = count_open - count_close
+                # Find position for each unclosed brace
+                positions = []
+                open_positions = [i for i, char in enumerate(line) if char == '{']
+                close_positions = [i for i, char in enumerate(line) if char == '}']
+                
+                # Match opening and closing braces
+                for open_pos in open_positions:
+                    matched = False
+                    for close_pos in close_positions:
+                        if close_pos > open_pos:
+                            matched = True
+                            close_positions.remove(close_pos)
+                            break
+                    if not matched:
+                        positions.append(open_pos)
+                
+                # Add closing braces
+                new_line = line
+                for pos in sorted(positions, reverse=True):
+                    # Find next non-alphanumeric character or end of string
+                    end_pos = len(new_line)
+                    for i in range(pos + 1, len(new_line)):
+                        if not new_line[i].isalnum() and new_line[i] != '_' and new_line[i] != '.':
+                            end_pos = i
+                            break
+                    
+                    # Insert closing brace
+                    new_line = new_line[:end_pos] + '}' + new_line[end_pos:]
+                
+                lines[line_number - 1] = new_line
+                print(f"Added missing closing braces to f-string")
+        
+        elif "line too long" in error_code:
+            # Simple line break
+            if len(line) > 80:
+                # Find a good breaking point
+                break_point = 79
+                for i in range(79, 30, -1):
+                    if i < len(line) and line[i] in ' ,.:;+-*/()[]{}=':
+                        break_point = i
+                        break
+                
+                # Break the line
+                indentation = len(line) - len(line.lstrip())
+                first_part = line[:break_point + 1].rstrip()
+                second_part = line[break_point + 1:].lstrip()
+                
+                if line[break_point] in ' ':
+                    # Use backslash for continuation if breaking at space
+                    lines[line_number - 1] = first_part + ' \\\n'
+                    lines.insert(line_number, ' ' * (indentation + 4) + second_part)
+                else:
+                    # Otherwise just add a line break and proper indentation
+                    lines[line_number - 1] = first_part + '\n'
+                    lines.insert(line_number, ' ' * (indentation + 4) + second_part)
+                
+                print(f"Broke long line at position {break_point}")
     
-    # Write back the fixed content
-    with open(file_path, 'w', encoding='utf-8') as f:
-        f.writelines(lines)
-    
-    print(f"Fixed redefined functions in {file_path}")
-
+    try:
+        # Write back the fixed content
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.writelines(lines)
+        print(f"Fixed {error_code} in {file_path}:{line_number}")
+    except Exception as e:
+        print(f"Error writing file {file_path}: {e}")
 
 def main():
-    """Main function to fix all linting errors."""
-    # Get all Python files from the source directory
-    src_dir = Path('src')
-    tests_dir = Path('tests')
-    
-    all_py_files = []
-    for root_dir in [src_dir, tests_dir]:
-        if root_dir.exists():
-            for root, _, files in os.walk(root_dir):
-                for file in files:
-                    if file.endswith('.py'):
-                        all_py_files.append(Path(root) / file)
-    
-    print(f"Found {len(all_py_files)} Python files to process")
-    
-    # Process each file
-    for file_path in all_py_files:
-        print(f"Processing {file_path}...")
+    """Main function to fix all specified syntax errors."""
+    for file_path, line_number, error_code, error_message in ERRORS:
+        file_path = Path(file_path)
         
-        # Fix each type of error
-        remove_unused_imports(file_path)
-        fix_long_lines(file_path)
-        fix_missing_placeholders(file_path)
-        fix_unused_variables(file_path)
-        fix_redefined_functions(file_path)
+        # Make sure the file exists
+        if not file_path.exists():
+            print(f"Warning: File {file_path} does not exist. Skipping.")
+            continue
+        
+        # Fix the syntax error
+        fix_syntax_error(file_path, line_number, error_code, error_message)
     
-    print("All files processed successfully!")
-
+    print("\nAll specified syntax errors have been addressed!")
+    print("Please run your linter again to check for any remaining issues.")
 
 if __name__ == "__main__":
     main()

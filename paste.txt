@@ -1,14 +1,7 @@
-src/gitelle/commands/branch.py:46:58: E999 SyntaxError: invalid syntax
-src/gitelle/commands/clone.py:56:12: E999 IndentationError: unexpected indent
+src/gitelle/commands/branch.py:46:59: E999 SyntaxError: invalid syntax
+src/gitelle/commands/clone.py:48:18: E999 SyntaxError: invalid syntax. Perhaps you forgot a comma?
 src/gitelle/commands/diff.py:159:21: E131 continuation line unaligned for hanging indent
-src/gitelle/commands/status.py:138:28: E999 SyntaxError: EOL while scanning string literal
-src/gitelle/core/index.py:230:80: E501 line too long (83 > 79 characters)
-src/gitelle/core/objects.py:173:2: W291 trailing whitespace
-src/gitelle/core/objects.py:176:2: W291 trailing whitespace
-src/gitelle/core/objects.py:181:2: W291 trailing whitespace
-src/gitelle/core/objects.py:182:2: W291 trailing whitespace
-src/gitelle/core/objects.py:183:1: E302 expected 2 blank lines, found 1
-src/gitelle/core/refs.py:124:80: E501 line too long (84 > 79 characters)
-src/gitelle/core/repository.py:204:80: E501 line too long (87 > 79 characters)
-src/gitelle/core/repository.py:293:80: E501 line too long (84 > 79 characters)
-src/gitelle/core/repository.py:324:80: E501 line too long (89 > 79 characters)
+src/gitelle/commands/status.py:138:26: E999 SyntaxError: unterminated string literal (detected at line 138)
+src/gitelle/core/objects.py:171:44: E999 IndentationError: unindent does not match any outer indentation level
+src/gitelle/core/refs.py:124:80: E501 line too long (80 > 79 characters)
+src/gitelle/core/repository.py:204:81: E999 SyntaxError: f-string: expecting '}'

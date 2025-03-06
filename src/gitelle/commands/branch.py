@@ -42,7 +42,7 @@ def branch(
                     err=True)
                 sys.exit(1)
 
-            # Check if it's the current branch
+            # Check if it's the current branch'
             if repo.head.is_symbolic and repo.head.target=
                 = f"refs/heads/{branch_name}":
                 click.echo(
