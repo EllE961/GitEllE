@@ -6,16 +6,16 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="gitelle",
     version="0.1.0",
-    author="Your Name",
-    author_email="your.email@example.com",
+    author="EllE",
+    author_email="yahyaalsalmi961@gmail.com",
     description="A lightweight, educational implementation of Git in Python",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/gitelle",
+    url="https://github.com/EllE961/gitelle",
     project_urls={
-        "Bug Tracker": "https://github.com/yourusername/gitelle/issues",
+        "Bug Tracker": "https://github.com/EllE961/gitelle/issues",
         "Documentation": "https://gitelle.readthedocs.io/",
-        "Source Code": "https://github.com/yourusername/gitelle",
+        "Source Code": "https://github.com/EllE961/gitelle",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
