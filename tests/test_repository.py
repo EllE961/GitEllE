@@ -1,7 +1,6 @@
 """
 Tests for the Repository class.
 """
-import os
 import shutil
 import tempfile
 from pathlib import Path
@@ -28,7 +27,7 @@ class TestRepository(TestCase):
     def test_init(self):
         """Test repository initialization."""
         # Initialize a repository
-        repo = Repository.init(self.repo_path)
+        Repository.init(self.repo_path)
 
         # Check that the repository was created correctly
         gitelle_dir = self.repo_path / Repository.GITELLE_DIR
@@ -96,4 +95,3 @@ def test_repo_index(temp_repo):
     # Re-read the index
     new_repo = Repository(temp_repo.path)
     assert "test.txt" in new_repo.index.entries
-
