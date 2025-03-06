@@ -1,28 +1,47 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "gitelle"
-version = "0.1.2"
+version = "0.1.0"
 description = "A lightweight, educational implementation of Git in Python"
 readme = "README.md"
 requires-python = ">=3.8"
-license = { text = "MIT License" }
+license = {file = "LICENSE"}
 authors = [
-    { name = "EllE", email = "yahyaalsalmi961@gmail.com" }
+    {name = "EllE961", email = "yahyaalsalmi961@gmail.com"}
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent"
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Topic :: Software Development :: Version Control :: Git",
 ]
 dependencies = [
     "click>=8.0.0",
     "zlib-wrapper>=0.1.3",
     "pathlib>=1.0.1",
-    "pyyaml>=6.0"
+    "pyyaml>=6.0",
 ]
+
+[project.urls]
+"Homepage" = "https://github.com/EllE961/gitelle"
+"Bug Tracker" = "https://github.com/EllE961/gitelle/issues"
+"Documentation" = "https://gitelle.readthedocs.io/"
+
+[project.scripts]
+gitelle = "gitelle.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
 
 [tool.black]
 line-length = 88
@@ -60,6 +79,3 @@ exclude_lines = [
     "pass",
     "raise ImportError",
 ]
-
-[tool.setuptools]
-license-files = []
