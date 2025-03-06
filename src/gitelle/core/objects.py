@@ -2,13 +2,9 @@
 Implementation of Git object types (blob, tree, commit).
 """
 import hashlib
-import os
-import time
-import zlib
 from abc import ABC, abstractmethod
-from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple, Union
+from typing import Tuple, Union
 
 from gitelle.utils.compression import compress_data, decompress_data
 from gitelle.utils.filesystem import ensure_directory_exists
@@ -60,7 +56,6 @@ class GitObject(ABC):
         Returns:
             The object type as a string
         """
-        pass
 
     @abstractmethod
     def serialize(self) -> bytes:
@@ -70,7 +65,6 @@ class GitObject(ABC):
         Returns:
             The serialized object data
         """
-        pass
 
     @classmethod
     @abstractmethod
@@ -85,7 +79,6 @@ class GitObject(ABC):
         Returns:
             A new GitObject instance
         """
-        pass
 
     def write(self) -> str:
         """

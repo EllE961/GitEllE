@@ -1,7 +1,6 @@
 """
 Tests for the 'status' command.
 """
-import os
 import shutil
 import tempfile
 from pathlib import Path

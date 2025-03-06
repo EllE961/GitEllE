@@ -4,7 +4,6 @@ Tests for the 'add' command.
 import os
 import shutil
 import tempfile
-from pathlib import Path
 from unittest import TestCase
 from click.testing import CliRunner
 

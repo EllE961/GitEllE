@@ -4,7 +4,7 @@ Configuration utility functions for GitEllE.
 import os
 import configparser
 from pathlib import Path
-from typing import Dict, Optional, Union
+from typing import Optional, Union
 
 
 class Config:

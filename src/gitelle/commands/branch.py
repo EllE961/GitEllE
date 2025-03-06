@@ -1,13 +1,11 @@
 """
 Implementation of the 'branch' command for GitEllE.
 """
-import os
 import sys
-from typing import List, Optional
+from typing import Optional
 
 import click
 
-from gitelle.core.refs import BranchReference
 from gitelle.core.repository import Repository
 
 

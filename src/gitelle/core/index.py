@@ -2,12 +2,10 @@
 Implementation of the Git index (staging area).
 """
 import hashlib
-import os
 import struct
-import time
 from collections import OrderedDict
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple, Union
+from typing import List, Optional, Tuple, Union
 
 from gitelle.core.objects import Blob
 from gitelle.utils.filesystem import is_executable
@@ -296,4 +294,3 @@ class Index:
             The ID of the tree object
         """
         # Implementation of tree creation logic
-        pass

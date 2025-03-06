@@ -2,14 +2,13 @@
 Core implementation of GitEllE repository functionality.
 """
 import os
-import sys
 import time
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple, Union
+from typing import List, Optional, Union
 
 from gitelle.core.index import Index
 from gitelle.core.objects import Blob, Commit, GitObject, Tree
-from gitelle.core.refs import BranchReference, Reference, TagReference
+from gitelle.core.refs import Reference
 from gitelle.utils.filesystem import ensure_directory_exists
 
 
@@ -366,7 +365,7 @@ class Repository:
         self.head.save()
 
         # Get the tree from the commit
-        tree = self.get_object(commit.tree_id)
+        self.get_object(commit.tree_id)
 
         # Update the working directory
         # In a real implementation, this would recursively checkout the tree

@@ -3,7 +3,7 @@ Implementation of Git references (branches, tags, HEAD).
 """
 import os
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 
 
 class Reference:

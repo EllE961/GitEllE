@@ -1,7 +1,6 @@
 """
 Implementation of the 'add' command for GitEllE.
 """
-import os
 import sys
 from pathlib import Path
 from typing import List

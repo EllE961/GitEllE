@@ -3,13 +3,9 @@ Implementation of the 'checkout' command for GitEllE.
 """
 import os
 import sys
-from pathlib import Path
-from typing import Optional
 
 import click
 
-from gitelle.core.objects import Commit, Tree
-from gitelle.core.refs import BranchReference, Reference
 from gitelle.core.repository import Repository
 from gitelle.utils.filesystem import write_file
 

@@ -1,16 +1,14 @@
 """
 Implementation of the 'diff' command for GitEllE.
 """
-import os
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import List
 
 import click
 
-from gitelle.core.objects import Blob
 from gitelle.core.repository import Repository
-from gitelle.utils.diff import create_unified_diff, get_diff_stats
+from gitelle.utils.diff import create_unified_diff
 from gitelle.utils.filesystem import read_file
 
 

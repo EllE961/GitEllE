@@ -3,15 +3,12 @@ Implementation of the 'clone' command for GitEllE.
 """
 import os
 import sys
-import tempfile
-import shutil
 from pathlib import Path
 from typing import Optional
 from urllib.parse import urlparse
 
 import click
 
-from gitelle.core.repository import Repository
 from gitelle.commands.init import init_repository
 
 

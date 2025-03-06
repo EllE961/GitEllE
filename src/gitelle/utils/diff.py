@@ -1,7 +1,7 @@
 """
 Diff utility functions for GitEllE.
 """
-from typing import List, Tuple, Union
+from typing import List, Tuple
 from difflib import unified_diff
 
 

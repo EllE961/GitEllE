@@ -4,13 +4,11 @@ Implementation of the 'commit' command for GitEllE.
 import os
 import sys
 import time
-from datetime import datetime, timezone
-from pathlib import Path
 from typing import Optional
 
 import click
 
-from gitelle.core.objects import Commit, Tree
+from gitelle.core.objects import Commit
 from gitelle.core.repository import Repository
 
 

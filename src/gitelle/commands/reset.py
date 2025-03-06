@@ -1,14 +1,11 @@
 """
 Implementation of the 'reset' command for GitEllE.
 """
-import os
 import sys
-from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 import click
 
-from gitelle.core.objects import Commit, Tree
 from gitelle.core.repository import Repository
 
 
@@ -28,7 +25,7 @@ def reset_hard(repo: Repository, commit_id: str) -> None:
 
     # In a real implementation, we would populate the index from the tree
     # and update the working directory
-    tree = repo.get_object(commit.tree_id)
+    repo.get_object(commit.tree_id)
     # For a full implementation, we would checkout the tree to the working
     # directory
 
@@ -51,7 +48,7 @@ def reset_mixed(repo: Repository, commit_id: str) -> None:
     repo.index.entries.clear()
 
     # In a real implementation, we would populate the index from the tree
-    tree = repo.get_object(commit.tree_id)
+    repo.get_object(commit.tree_id)
 
     # Write the updated index
     repo.index.write()
@@ -66,7 +63,6 @@ def reset_soft(repo: Repository, commit_id: str) -> None:
         commit_id: The ID of the commit to reset to
     """
     # Do not update the index or working directory
-    pass
 
 
 @click.command()

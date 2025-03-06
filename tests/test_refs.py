@@ -1,7 +1,6 @@
 """
 Tests for Git references (branches, tags, HEAD).
 """
-import os
 import shutil
 import tempfile
 from pathlib import Path

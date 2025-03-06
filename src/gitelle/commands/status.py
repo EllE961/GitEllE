@@ -1,10 +1,8 @@
 """
 Implementation of the 'status' command for GitEllE.
 """
-import os
 import sys
-from pathlib import Path
-from typing import Dict, List, Set, Tuple
+from typing import List, Tuple
 
 import click
 

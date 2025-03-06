@@ -1,9 +1,6 @@
 """
 Command-line interface for GitEllE.
 """
-import sys
-from pathlib import Path
-from typing import Optional
 
 import click
 
@@ -27,7 +24,6 @@ def main():
     a clear understanding of Git's internal mechanisms while maintaining
     compatibility with the original Git commands.
     """
-    pass
 
 
 # Register commands
