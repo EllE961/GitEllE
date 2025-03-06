@@ -1,6 +1,5 @@
 # GitEllE
 
-[![CI](https://github.com/EllE961/gitelle/actions/workflows/ci.yml/badge.svg)](https://github.com/EllE961/gitelle/actions/workflows/ci.yml)
 [![PyPI version](https://badge.fury.io/py/gitelle.svg?v=1)](https://pypi.org/project/gitelle/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -9,11 +8,11 @@ GitEllE is a lightweight, educational implementation of Git written in Python. I
 
 ## Features
 
-- Core Git functionality (init, add, commit, branch, checkout)
-- Compatible with standard Git workflows
-- Pure Python implementation
-- Extensive documentation and tests
-- Simple, readable codebase for educational purposes
+-   Core Git functionality (init, add, commit, branch, checkout)
+-   Compatible with standard Git workflows
+-   Pure Python implementation
+-   Extensive documentation and tests
+-   Simple, readable codebase for educational purposes
 
 ## Installation
 
@@ -63,5 +62,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- Inspired by the original [Git](https://git-scm.com/) project
-- Thanks to all contributors who have helped shape GitEllE
+-   Inspired by the original [Git](https://git-scm.com/) project
+-   Thanks to all contributors who have helped shape GitEllE
