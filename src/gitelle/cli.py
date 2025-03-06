@@ -22,7 +22,7 @@ from gitelle.commands.status import status
 def main():
     """
     GitEllE: A lightweight Git implementation in Python.
-    
+
     GitEllE is an educational implementation of Git that aims to provide
     a clear understanding of Git's internal mechanisms while maintaining
     compatibility with the original Git commands.
