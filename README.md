@@ -7,11 +7,13 @@
 ![python](https://img.shields.io/badge/python-3.8+-1f1d1b?style=flat-square&labelColor=0d0c0b)
 ![click](https://img.shields.io/badge/click-8.x-d95926?style=flat-square&labelColor=0d0c0b)
 ![license](https://img.shields.io/badge/license-MIT-1f1d1b?style=flat-square&labelColor=0d0c0b)
+![status](https://img.shields.io/badge/status-experimental-9085e9?style=flat-square&labelColor=0d0c0b)
 
 <img src="docs/assets/hero.png" alt="gitelle init, add and status, then the .gitelle object store with two zlib-compressed loose objects decoded to show blob 32 and blob 28 headers and the original file contents" width="100%">
 
 </div>
 
+This is an experiment and isn't finished: init, add, status and diff work, but commit can't build a tree from the index yet, so log, branch, reset and checkout don't work either (see Limitations).
 I wrote GitEllE to understand Git by rebuilding its core: the object database, the index, and refs. It is not a Git replacement. The point is that the pieces are small and readable, and that the files it writes are the real thing, a SHA-1-named, zlib-compressed object store under `.gitelle/`, so you can open the objects and see how content addressing works. The run in the image is exactly that: after `add`, the two staged files exist as loose objects whose ids are the SHA-1 of `blob <size>\0<contents>`.
 
 ## How it works
