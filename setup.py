@@ -35,9 +35,6 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "click>=8.0.0",
-        "zlib-wrapper>=0.1.3",
-        "pathlib>=1.0.1",
-        "pyyaml>=6.0",
     ],
     entry_points={
         "console_scripts": [
